@@ -16,7 +16,7 @@
         //+======================================================+
         function error(){
             if(mysql_error() != ''){
-                echo '<b>MySQL Error</b>: '.mysql_error().'<br/>';
+                return 'DATABASE_ERROR: ' . mysql_error();
             }
         }
         //+======================================================+
@@ -34,28 +34,28 @@
         }
         //+======================================================+
         function get_num_rows($query_result=NULL){
-			// This command is only valid for statements like SELECT or SHOW that return an actual result set. To retrieve the number of rows affected by a INSERT, UPDATE, REPLACE or DELETE query, use mysql_affected_rows(). 
+			// This command is only valid for statements like SELECT or SHOW that return an actual result set. To retrieve the number of rows affected by a INSERT, UPDATE, REPLACE or DELETE query, use mysql_affected_rows().
             if($query_result == NULL){
                 $return = mysql_num_rows($this->query_result); //mysqli_stmt_num_rows
             }else{
                 $return = mysql_num_rows($query_result); //mysql_num_rows
             }
             if($return === false){
-                $this->error();
+                return $this->error();
             }else{
                 return $return;
             }
         }
         //+======================================================+
         function get_affected_rows($link_identifier=NULL){
-			// Get the number of affected rows by the last INSERT, UPDATE, REPLACE or DELETE query associated with link_identifier. 
+			// Get the number of affected rows by the last INSERT, UPDATE, REPLACE or DELETE query associated with link_identifier.
             if($query_result == NULL){
                 $return = mysql_affected_rows($this->connect_id); //mysqli_stmt_num_rows
             }else{
                 $return = mysql_affected_rows($link_identifier); //mysql_num_rows
             }
             if($return == -1){
-                $this->error();
+                return $this->error();
             }else{
                 return $return;
             }
@@ -68,7 +68,7 @@
                 $return = mysql_fetch_array($query_id);
             }
             if(!$return){
-                $this->error();
+                return $this->error();
             }else{
                 return $return;
             }
@@ -78,7 +78,7 @@
         function get_inserted_id(){
             $return = mysql_insert_id();
             if($return===false){
-                $this->error();
+                return $this->error();
             }else{
                 return $return;
             }
@@ -89,7 +89,7 @@
                 return mysql_close($this->connect_id);
             }
         }
-        //+======================================================+    
+        //+======================================================+
     }
 
 ?>
